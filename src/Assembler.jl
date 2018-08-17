@@ -1,28 +1,24 @@
 """
-create the Bₖ matrix which corresponds to the linear map  from the 
-reference element ``T = \{ (x,y,z) : x,y,z ≥ 0 x+y+z = 1 \}` to the
+create the ``Bₖ = [Pᵐ- P¹, ⋯ , P² - P¹]`` matrix which corresponds to the linear map  from the 
+reference element ``T = { (x,y,z) : x,y,z ≥ 0 x+y+z = 1 }`` to the
 current triangle ``Tₖ = (P¹ , ⋯ , Pᵐ )``
 
-# Arguments :
-* x : a 3 x m matrix containing all the points of the current element
-# Returns :
-``Bₖ = [ Pᵐ- P¹, ⋯ , P² - P¹]``
 """
-function mapRefToLocal(x::Array{Float64,2})
+function mapRefToLocal(x)
     @assert(size(x, 1) == 3)
     return x[:,2:end].-x[:,1:1] # or cumsum(diff(x,2),2)
 end
 
 """
-jacobian(x)
+computes the jacobian of the transformation for the current element
 
 """
-function jacobian(x::Array{Float64,2})
-    m = mapRefToLocal(x)
+function jacobian(x)
+    m = mapRefToLocal(x) # FIXME do not recall mapRefToLocal, change the input argument
     n = size(m, 2)
     #F = svdfact(m)
-    F = qrfact(m)
-    return abs(prod(diag(F[:R])))
+    F = qr(m)
+    return abs(prod(diag(F.R)))
 end
 """
 computeφAndDφOnGaußPoints(fun::BasisFunction, form::IntegrationFormula)
@@ -76,6 +72,7 @@ function stiffnesAndMassMatrix(mesh::Mesh, dim::Int, order::Int, fun::BasisFunct
     end
     return K,M
 end
+
 
 
 """

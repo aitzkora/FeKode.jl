@@ -1,4 +1,6 @@
 module FeKode
+using LinearAlgebra
+using SparseArrays
 include("Mesh.jl")
 include("IntegrationFormula.jl")
 include("BasisFunction.jl")

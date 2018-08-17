@@ -1,6 +1,8 @@
-using Base.Test
+using Test
 using FeKode
-rootDir = dirname(dirname(Base.functionloc(FeKode.eval, Tuple{Void})[1]))
+using LinearAlgebra
+using SparseArrays
+rootDir = dirname(dirname(Base.functionloc(FeKode.eval)[1])) # fix with version 1.0
 myTests = [ "Basis", "Integration", "Assemblers", "Meshes"]
 @testset "FeKode" begin
     for t in myTests

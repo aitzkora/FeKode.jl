@@ -27,7 +27,7 @@ x = [1, 3, 4]
 M = sparse(FeKode.cartesianProduct(x,x)...,1:9*1.)
 Mᵣ = FeKode.removeRowsAndColsAndPutOnes(M, [1, 3])
 v = Float64[0, 1, 0]
-Mᵥ = [eye(3) - v*v' zeros(3,1); zeros(1,3) 9]
+Mᵥ = [Matrix(I,3, 3) - v*v' zeros(3,1); zeros(1,3) 9]
 @test norm(Mᵣ-Mᵥ) ≈ 0. atol = 1e-24
 
 #1D test with laplacian
@@ -60,8 +60,8 @@ fe = FeKode.P1Basis(2)
 K, M = FeKode.stiffnesAndMassMatrix(m, 2, 2, fe)
 x = m.points[:, 1]
 y = m.points[:, 2]
-u = y.*(1-y).*x.^3
-f = -6*x.*y.*(1-y)+2*x.^3
+u = y.*(1 .- y).*x.^3
+f = -6*x.*y.*(1 .-y)+2*x.^3
 F = M * f
 
 ## substract boundary contribution to the rhs

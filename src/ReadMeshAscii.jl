@@ -28,10 +28,10 @@ function readMeshFromFileAsciiVtk(fileName::String)
     else
          nbCells, nbCellScalars= map(x->parse(Int, x), split(cellStr.match)[2:3])
     end
-    cells = Array{Array{Int64}}(nbCells)
+    cells = Array{Array{Int64}}(undef,nbCells)
     for i in cellOffset + 1 : cellOffset + nbCells
        ints = map(x->parse(Int, x), split(lines[i]))
        cells[i-cellOffset] = ints[2:end]
     end
-    return Mesh(pts, cells + 1, [])
+    return Mesh(pts, map(x-> x .+ 1, cells), [])
 end

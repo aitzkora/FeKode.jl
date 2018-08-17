@@ -1,4 +1,4 @@
-type BasisFunction
+struct BasisFunction
     φ::Array{Function}
     Dφ::Array{Function,2}
     BasisFunction(ψ::Array{Function}, Dψ::Array{Function,2}) =

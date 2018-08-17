@@ -1,12 +1,12 @@
 """
-Implement the Gauss integation formulae
+Implement the Gauß integration formulae
 
 - points::Array{Float64,2} reference Gauß points in the unit simplex
 - weights::Array{Float64} weights associated to the Gauß points
 
 Formally we approx `` \\int_T f(x) dx = \\sum_k w_k f(ξ_k) ``
 """
-type IntegrationFormula
+struct IntegrationFormula
     dim::Int8
     points::Array{Float64,2}
     weights::Array{Float64}
@@ -58,7 +58,7 @@ integrate function f on the unit simplex using gauß formula
 """
 function integrate(f, form::IntegrationFormula)
     @assert size(form.points, 2) ==  size(form.weights,1) "integrate :  points and weights do no have compatible dimensions"
-    return (mapslices(f, form.points, 1)*form.weights)[1]
+    return (mapslices(f, form.points, dims = 1)*form.weights)[1]
 end
 
 
