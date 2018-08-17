@@ -1,4 +1,6 @@
 """
+  mapRefToLocal(x) 
+
 create the ``Bₖ = [Pᵐ- P¹, ⋯ , P² - P¹]`` matrix which corresponds to the linear map  from the 
 reference element ``T = { (x,y,z) : x,y,z ≥ 0 x+y+z = 1 }`` to the
 current triangle ``Tₖ = (P¹ , ⋯ , Pᵐ )``
@@ -10,29 +12,29 @@ function mapRefToLocal(x)
 end
 
 """
+jacobian(m)
+
 computes the jacobian of the transformation for the current element
 
 """
-function jacobian(x)
-    m = mapRefToLocal(x) # FIXME do not recall mapRefToLocal, change the input argument
+function jacobian(m)
     n = size(m, 2)
-    #F = svdfact(m)
-    F = qr(m)
+    F = qr(m) # or we can use svd
     return abs(prod(diag(F.R)))
 end
 """
 computeφAndDφOnGaußPoints(fun::BasisFunction, form::IntegrationFormula)
 
-   Apply the basis functions on Gauß points (functions on rows, points on columns)
+   Apply the basis functions and derivatives on Gauß points (functions on rows, points on columns)
 
 """
 
 function computeφAndDφOnGaußPoints(fun::BasisFunction, form::IntegrationFormula)
-m, n = size(fun.Dφ)
-p = size(form.points, 2) # beware that points are stored vertically
-M = Float64[fun.φ[i](form.points[:, k]) for i=1:m, k=1:p]
-N = Float64[fun.Dφ[i,j](form.points[:, k]) for i=1:m, j=1:n, k=1:p]
-return M,N
+    m, n = size(fun.Dφ)
+    p = size(form.points, 2) # beware that points are stored vertically
+    M = Float64[fun.φ[i](form.points[:, k]) for i=1:m, k=1:p]
+    N = Float64[fun.Dφ[i,j](form.points[:, k]) for i=1:m, j=1:n, k=1:p]
+    return M, N
 end
 
 """
@@ -40,14 +42,14 @@ cartesianProduct(x, y)
 
   Cartesian product of two sets describing by vectors
 
-# Examples
-
+# Example
+```julia-repl
 julia> cartesianProduct([2,4],[1,2,3])
 ([2, 2, 2, 4, 4, 4], [1, 2, 3, 1, 2, 3])
-
+```
 """
 function cartesianProduct(x,y)
-    return repeat(x,inner=size(y,1)),repeat(y,outer=size(x,1))
+    return repeat(x, inner=size(y, 1)), repeat(y, outer=size(x, 1))
 end
 
 function stiffnesAndMassMatrix(mesh::Mesh, dim::Int, order::Int, fun::BasisFunction)
@@ -64,7 +66,7 @@ function stiffnesAndMassMatrix(mesh::Mesh, dim::Int, order::Int, fun::BasisFunct
         pts   = mesh.points[indices, :]'
         Bₖ    = mapRefToLocal(pts)
         invBₖ = inv(Bₖ'Bₖ)
-        Jₖ    = jacobian(pts)
+        Jₖ    = jacobian(Bₖ)
         mElem = φ * Diagonal(Jₖ .* form.weights) * φ'
         kElem = sum([form.weights[l] * Jₖ * Dφ[:,:,l] * invBₖ * Dφ[:,:,l]' for l =1:p])
         M += sparse(cartesianProduct(indices, indices)..., mElem[:], n, n)
@@ -82,8 +84,7 @@ Return a sparse matrix equal to `M` but with columns and rows with indexes
 in `indices` removed and replaced by ones on the diagonal
 
 # Example
-```jldoctest
-
+```julia-repl
 julia> A=(1:3).^(1.:3.)'
 3×3 Array{Float64,2}:
  1.0  1.0   1.0
@@ -116,5 +117,5 @@ function removeRowsAndColsAndPutOnes(M::SparseMatrixCSC{Float64,Int64}, indices:
     append!(In, boundary)
     append!(Jn, boundary)
     append!(Vn, ones(size(boundary)))
-    return sparse(In,Jn,Vn)
+    return sparse(In, Jn, Vn)
 end
