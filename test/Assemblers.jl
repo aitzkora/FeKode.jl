@@ -1,7 +1,7 @@
 @testset "Assemblers" begin
 a = reshape([ gcd(i,j) + 0. for i=1:4 for j=1:3], 3,4)
-b₁ = FeKode.mapRefToLocal(a[:,1:2]) 
-b₂ = FeKode.mapRefToLocal(a[:,1:3]) 
+b₁ = FeKode.mapRefToLocal(a[:,1:2])
+b₂ = FeKode.mapRefToLocal(a[:,1:3])
 b₃ = FeKode.mapRefToLocal(a[:,1:4])
 
 @test b₁ ≈ [0, 1, 0] atol=1e-12
@@ -12,7 +12,6 @@ b₃ = FeKode.mapRefToLocal(a[:,1:4])
 @test FeKode.jacobian(b₂) == 2
 @test FeKode.jacobian(b₃) == 0
 
-## FIXME : add test for others cases than 2D dimension
 basis = FeKode.P1Basis(2)
 m, n = FeKode.computeφAndDφOnGaußPoints(basis, FeKode.IntegrationFormula(2, 2))
 m_ref = [1 4 1; 4 1 1 ; 1 1 4] / 6.

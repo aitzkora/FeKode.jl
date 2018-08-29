@@ -1,8 +1,13 @@
+<script type="text/javascript" async
+src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js? 
+config=TeX-MML-AM_CHTML"
+</script>
+
 # FeKode
  This project is aiming to develop a very basic Finite Elements simulator.
 ## Assembler
  Currently we simulate only static problems involving stiffness and mass matrices, for example
- we can try to solve $ \Delta u = f$ avec $ f = -6y(1-y)+2x^3 $ en utilisant les conditions de dirichlet au bord
+ we can try to solve $$ \Delta u = f$$ avec $ f = -6y(1-y)+2x^3 $ en utilisant les conditions de dirichlet au bord
 ```julia
 using FeKode, LinearAlgebra, Test
 N = 10
@@ -59,7 +64,7 @@ ZZ=reshape(sol, N, N)
 surf(XX,YY,ZZ)
 ```
 who gives
-![Solution Δu =-6y(1-y)+2x^3 ][data/sol10.png]
+![example][sol10.svg]
 
 ## Limitations
  - Code not optimized
