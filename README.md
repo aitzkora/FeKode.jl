@@ -59,7 +59,7 @@ ZZ=reshape(sol, N, N)
 surf(XX,YY,ZZ)
 ```
 who gives
-![solution of Δu = -6y(1-y)+2x³ ][https://github.com/aitzkora/FeKode.jl/raw/master/data/sol10.png]
+![solution of Δu = -6y(1-y)+2x³ ](https://github.com/aitzkora/FeKode.jl/raw/master/data/sol10.png)
 
 ## Limitations
  - Code not optimized
