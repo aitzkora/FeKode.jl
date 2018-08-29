@@ -59,7 +59,7 @@ ZZ=reshape(sol, N, N)
 surf(XX,YY,ZZ)
 ```
 who gives
-![example][sol10.png]
+![example][https://github.com/aitzkora/FeKode.jl/data/sol10.png]
 
 ## Limitations
  - Code not optimized
