@@ -2,7 +2,12 @@
  This project is aiming to develop a very basic Finite Elements simulator.
 ## Assembler
  Currently we simulate only static problems involving stiffness and mass matrices, for example
- we can try to solve Δ u =  -6y(1-y)+2x³ using Dirichlet boundary conditions
+ we can try to solve
+
+ Δu =  -6y(1-y)+2x³
+
+using Dirichlet boundary conditions
+
 ```julia
 using FeKode, LinearAlgebra, Test
 N = 10
@@ -46,7 +51,7 @@ F[boundary] = u[boundary]
 ##suppress rows and columns from the K matrix
 Kn = FeKode.removeRowsAndColsAndPutOnes(K, boundary)
 
-# check that the error is less than h^2
+# check that the error is less than h²
 sol=Kn\F
 @test norm(sol-u) ≈ 0. atol=1e-2
 ```
@@ -58,10 +63,9 @@ YY=reshape(y, N, N)
 ZZ=reshape(sol, N, N)
 surf(XX,YY,ZZ)
 ```
-who gives
 ![solution of Δu = -6y(1-y)+2x³ ](https://github.com/aitzkora/FeKode.jl/raw/master/data/sol10.png)
 
 ## Limitations
  - Code not optimized
- - we do not support any kind of parallelism (distributed or Shared)
+ - we do not support currently any kind of parallelism (distributed or Shared)
  - lack for time integrator scheme
