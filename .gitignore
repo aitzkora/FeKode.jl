@@ -1,0 +1,4 @@
+Manifest.toml
+*.jl.cov
+docs/build/
+docs/site/
