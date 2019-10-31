@@ -1,5 +1,11 @@
 # FeKode
 This project is aiming to develop a very basic Finite Elements simulator.
+
+[![Build Status](https://travis-ci.org/aitzkora/FeKode.jl.svg?branch=master)](https://travis-ci.org/aitzkora/FeKode.jl)
+[![codecov](https://codecov.io/gh/aitzkora/FeKode.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/aitzkora/FeKode.jl)
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://aitzkora.github.io/FeKode.jl/dev)
+
+
 ## Assembler
 Currently we simulate only static problems involving stiffness and mass matrices, for example
 we can try to solve
